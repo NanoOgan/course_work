@@ -72,6 +72,9 @@
     <Compile Include="Assets\Scripts\Node.cs" />
     <Compile Include="Assets\Scripts\Raycaster.cs" />
     <Compile Include="Assets\Scripts\RoadNode.cs" />
+    <Compile Include="Assets\Scripts\States\AState.cs" />
+    <Compile Include="Assets\Scripts\States\IdleState.cs" />
+    <Compile Include="Assets\Scripts\States\WalkingState.cs" />
     <Compile Include="Assets\Scripts\Verticie.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />

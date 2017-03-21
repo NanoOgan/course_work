@@ -2,6 +2,8 @@
 using Assets.Scripts;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.States;
+using Assets;
 
 public class AI : MonoBehaviour
 {
@@ -10,6 +12,45 @@ public class AI : MonoBehaviour
     private List<Raycaster> sensors;
     private List<RoadNode> nodes;
     private RoadNode curNode;
+    private Graph mapGraph;
+    private AState state;
+    private Stack<Node> path;
+    public List<RoadNode> RoadNodes
+    {
+        get
+        {
+            return nodes;
+        }
+    }
+    public RoadNode CurNode
+    {
+        get
+        {
+            return curNode;
+        }
+        set
+        {
+            curNode = value;
+        }
+    }
+    public Graph MaphGraph
+    {
+        get
+        {
+            return mapGraph;
+        }
+    }
+    public Stack<Node> Path
+    {
+        get
+        {
+            return path;
+        }
+        set
+        {
+            path = value;
+        }
+    }
 
     public static AI Instance
     {
@@ -21,6 +62,8 @@ public class AI : MonoBehaviour
     {
         Instance = this;
         nodes = new List<RoadNode>();
+        state = new IdleState(this);
+        mapGraph = new Graph();
     }
 
     // Use this for initialization
@@ -32,7 +75,7 @@ public class AI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        state.Update();
     }
 
     public void AddSensor(Raycaster sensor)
@@ -42,23 +85,36 @@ public class AI : MonoBehaviour
 
     public void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.CompareTag("CrossRoad"))
-        {
-            Vector3 pos = collision.transform.position;
-            foreach (var sensor in sensors)
-            {
-                if (nodes.Any(m => m.Name.Equals(pos.ToString())))
-                {
-
-                }
-                else
-                {
-                    if (curNode != null)
-                    {
-
-                    }
-                }
-            }
-        }
+        state.OnCollisionEnter(collision);
     }
+
+    public void ChangeState(AState state)
+    {
+        this.state = state;
+    }
+
+    public bool[] IsWalls()
+    {
+        bool[] isWalls = new bool[4];
+        foreach (Raycaster sensor in sensors)
+        {
+            if (sensor.RayDirection == Direction.Up)
+                isWalls[0] = true;
+            else
+                isWalls[0] = false;
+            if (sensor.RayDirection == Direction.Right)
+                isWalls[1] = true;
+            else
+                isWalls[1] = false;
+            if (sensor.RayDirection == Direction.Down)
+                isWalls[2] = true;
+            else
+                isWalls[2] = false;
+            if (sensor.RayDirection == Direction.Left)
+                isWalls[3] = true;
+            else
+                isWalls[3] = false;
+        }
+        return isWalls;
+    } 
 }

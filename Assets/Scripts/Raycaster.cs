@@ -6,6 +6,7 @@ public class Raycaster : MonoBehaviour
 
     [SerializeField]
     private Vector2 direction;
+    public Direction RayDirection;
     private AI mainAI;
     private bool isWall;
 
@@ -54,4 +55,12 @@ public class Raycaster : MonoBehaviour
             return direction;
         }
     }
+}
+
+public enum Direction
+{
+    Up,
+    Right,
+    Down,
+    Left
 }
