@@ -13,11 +13,12 @@ namespace Assets.Scripts.States
 
         public WalkingState(AI mainAi) : base(mainAi)
         {
+
         }
 
         public override void ChangeState()
         {
-            throw new NotImplementedException();
+            mainAi.ChangeState(new MovingState(mainAi));
         }
 
         public override void OnCollisionEnter(Collision collision)
